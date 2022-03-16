@@ -88,26 +88,38 @@ namespace MyMangaLibrary.Controllers
             return View(manga);
         }
 
-        [HttpPost, ActionName("IncreaseChapter")]
-        public async Task<IActionResult> IncreaseChapter(int? id, string button) {
-
-            System.Diagnostics.Debug.WriteLine("CALLED");
-
+        [HttpPost]
+        public ActionResult DecreaseChapter(int id) {
             if (id == null) {
                 return NotFound();
             }
-
-            var manga = await _context.Manga.FindAsync(id);
+            var manga =  _context.Manga.Where(m => m.ID == id).FirstOrDefault();
             if (manga == null) {
                 return NotFound();
             }
 
-            if (ModelState.IsValid) {
-                manga.ChapterCount++;
-                _context.Update(manga);
-                await _context.SaveChangesAsync();
+            manga.ChapterCount--;
+            _context.Update(manga);
+            _context.SaveChanges();
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public ActionResult IncreaseChapter(int id) {
+            if (id == null) {
+                return NotFound();
             }
-            return View(manga);
+            var manga =  _context.Manga.Where(m => m.ID == id).FirstOrDefault();
+            if (manga == null) {
+                return NotFound();
+            }
+
+            manga.ChapterCount++;
+            _context.Update(manga);
+            _context.SaveChanges();
+
+            return RedirectToAction("Index");
         }
 
         // POST: Mangas/Edit/5

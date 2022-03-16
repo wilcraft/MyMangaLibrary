@@ -34,9 +34,15 @@
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                <input id="DecreaseChapter" type="button" value="-" />
+                @using (Html.BeginForm("DecreaseChapter", "Mangas", new {id = item.ID}))
+                {
+                    <input class="btn btn-chap" type="submit" title="-" value="-" />
+                }
                 @Html.DisplayFor(modelItem => item.ChapterCount)
-                <button asp-action="IncreaseChapter" asp-reoute-id="@item.ID">+</button>
+                @using (Html.BeginForm("IncreaseChapter", "Mangas", new {id = item.ID}))
+                {
+                    <input class="btn btn-chap" type="submit" title="+" value="+" />
+                }
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |

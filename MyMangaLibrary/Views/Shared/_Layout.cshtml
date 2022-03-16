@@ -15,8 +15,9 @@
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+
+                <div class="collapse navbar-collapse" id="navbarColor01">
+                    <ul class="navbar-nav me-auto">
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
@@ -29,8 +30,17 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Mangakas" asp-action="Index">Mankagas</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Mangas" asp-action="ShowSearchForm">Search</a>
+                        <li class="dropdown">
+                            <a href="#" class="nav-link nav-item dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                Search
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="nav-item dropdown-menu">
+                                <li>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Mangas" asp-action="ShowSearchForm">Search Manga</a>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Mangakas" asp-action="ShowSearchForm">Search Mangaka</a>
+                                </li>
+                            </ul>
                         </li>
                     </ul>
                     <partial name="_LoginPartial" />

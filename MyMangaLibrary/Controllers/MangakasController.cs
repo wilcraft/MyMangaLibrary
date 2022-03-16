@@ -24,7 +24,14 @@ namespace MyMangaLibrary.Controllers
         {
             return View(await _context.Mangaka.ToListAsync());
         }
-
+        public async Task<IActionResult> ShowSearchForm()
+        {
+            return View();
+        }
+        public async Task<IActionResult> ShowSearchResults(string SearchPhrase)
+        {
+            return View("Index", await _context.Mangaka.Where(m => m.Name.Contains(SearchPhrase)).ToListAsync());
+        }
         // GET: Mangakas/Details/5
         public async Task<IActionResult> Details(int? id)
         {

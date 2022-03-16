@@ -127,7 +127,7 @@ namespace MyMangaLibrary.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Rating,Name,ChapterCount")] Manga manga)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,Rating,Name,ChapterCount,Summary")] Manga manga)
         {
             if (id != manga.ID)
             {

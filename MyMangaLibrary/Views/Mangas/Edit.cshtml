@@ -6,7 +6,10 @@
 
 <h1>Edit</h1>
 
-<h4>Manga</h4>
+<h4>
+    @Html.DisplayFor(model => model.Name)
+</h4>
+
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -18,16 +21,25 @@
                 <input asp-for="Rating" class="form-control" />
                 <span asp-validation-for="Rating" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="ChapterCount" class="control-label"></label>
                 <input asp-for="ChapterCount" class="form-control" />
                 <span asp-validation-for="ChapterCount" class="text-danger"></span>
             </div>
+
+            <div class="form-group">
+                <label asp-for="Summary" class="form-label mt-4"></label>
+                <textarea class="form-control" asp-for="Summary" id="exampleTextarea" rows="3"></textarea>
+                <span asp-validation-for="Summary" class="text-danger"></span>
+            </div>
+            
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
@@ -36,7 +48,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a class="btn btn-primary btn-sm" asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {

@@ -17,5 +17,6 @@ namespace MyMangaLibrary.Models
         [StringLength(255, ErrorMessage = "Name is too long!")]
         public string Name { get; set; } = null;
         public int ChapterCount { get; set; }
+        public string Summary { get; set; }
     }
 }

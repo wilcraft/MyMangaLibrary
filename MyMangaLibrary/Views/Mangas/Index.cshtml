@@ -7,7 +7,7 @@
 <h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a class="btn btn-primary btn-sm" asp-action="Create">Create New</a>
 </p>
 <table class="table">
     <thead>
@@ -36,18 +36,18 @@
             <td>
                 @using (Html.BeginForm("DecreaseChapter", "Mangas", new {id = item.ID}))
                 {
-                    <input class="btn btn-chap" type="submit" title="-" value="-" />
+                    <input class="btn btn-chap btn-sm" type="submit" title="-" value="-" />
                 }
                 @Html.DisplayFor(modelItem => item.ChapterCount)
                 @using (Html.BeginForm("IncreaseChapter", "Mangas", new {id = item.ID}))
                 {
-                    <input class="btn btn-chap" type="submit" title="+" value="+" />
+                    <input class="btn btn-chap btn-sm" type="submit" title="+" value="+" />
                 }
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+                <a class="btn btn-warning btn-sm" asp-action="Edit" asp-route-id="@item.ID">Edit</a> 
+                <a class="btn btn-info btn-sm" asp-action="Details" asp-route-id="@item.ID">Details</a> 
+                <a class="btn btn-danger btn-sm"asp-action="Delete" asp-route-id="@item.ID">Delete</a>
             </td>
         </tr>
 }

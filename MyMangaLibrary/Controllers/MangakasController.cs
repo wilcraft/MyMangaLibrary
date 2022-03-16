@@ -10,29 +10,22 @@ using MyMangaLibrary.Models;
 
 namespace MyMangaLibrary.Controllers
 {
-    public class MangasController : Controller
+    public class MangakasController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public MangasController(ApplicationDbContext context)
+        public MangakasController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Mangas
+        // GET: Mangakas
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Manga.ToListAsync());
+            return View(await _context.Mangaka.ToListAsync());
         }
-        public async Task<IActionResult> ShowSearchForm()
-        {
-            return View();
-        }
-        public async Task<IActionResult> ShowSearchResults(string SearchPhrase)
-        {
-            return View("Index", await _context.Manga.Where( m => m.Name.Contains(SearchPhrase)).ToListAsync());
-        }
-        // GET: Mangas/Details/5
+
+        // GET: Mangakas/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -40,39 +33,39 @@ namespace MyMangaLibrary.Controllers
                 return NotFound();
             }
 
-            var manga = await _context.Manga
+            var mangaka = await _context.Mangaka
                 .FirstOrDefaultAsync(m => m.ID == id);
-            if (manga == null)
+            if (mangaka == null)
             {
                 return NotFound();
             }
 
-            return View(manga);
+            return View(mangaka);
         }
 
-        // GET: Mangas/Create
+        // GET: Mangakas/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Mangas/Create
+        // POST: Mangakas/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Rating,Name,ChapterCount")] Manga manga)
+        public async Task<IActionResult> Create([Bind("ID,Name,Age,Description")] Mangaka mangaka)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(manga);
+                _context.Add(mangaka);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(manga);
+            return View(mangaka);
         }
 
-        // GET: Mangas/Edit/5
+        // GET: Mangakas/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -80,44 +73,22 @@ namespace MyMangaLibrary.Controllers
                 return NotFound();
             }
 
-            var manga = await _context.Manga.FindAsync(id);
-            if (manga == null)
+            var mangaka = await _context.Mangaka.FindAsync(id);
+            if (mangaka == null)
             {
                 return NotFound();
             }
-            return View(manga);
+            return View(mangaka);
         }
 
-        [HttpPost, ActionName("IncreaseChapter")]
-        public async Task<IActionResult> IncreaseChapter(int? id, string button) {
-
-            System.Diagnostics.Debug.WriteLine("CALLED");
-
-            if (id == null) {
-                return NotFound();
-            }
-
-            var manga = await _context.Manga.FindAsync(id);
-            if (manga == null) {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid) {
-                manga.ChapterCount++;
-                _context.Update(manga);
-                await _context.SaveChangesAsync();
-            }
-            return View(manga);
-        }
-
-        // POST: Mangas/Edit/5
+        // POST: Mangakas/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Rating,Name,ChapterCount")] Manga manga)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,Name,Age,Description")] Mangaka mangaka)
         {
-            if (id != manga.ID)
+            if (id != mangaka.ID)
             {
                 return NotFound();
             }
@@ -126,12 +97,12 @@ namespace MyMangaLibrary.Controllers
             {
                 try
                 {
-                    _context.Update(manga);
+                    _context.Update(mangaka);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!MangaExists(manga.ID))
+                    if (!MangakaExists(mangaka.ID))
                     {
                         return NotFound();
                     }
@@ -142,10 +113,10 @@ namespace MyMangaLibrary.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(manga);
+            return View(mangaka);
         }
 
-        // GET: Mangas/Delete/5
+        // GET: Mangakas/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -153,30 +124,30 @@ namespace MyMangaLibrary.Controllers
                 return NotFound();
             }
 
-            var manga = await _context.Manga
+            var mangaka = await _context.Mangaka
                 .FirstOrDefaultAsync(m => m.ID == id);
-            if (manga == null)
+            if (mangaka == null)
             {
                 return NotFound();
             }
 
-            return View(manga);
+            return View(mangaka);
         }
 
-        // POST: Mangas/Delete/5
+        // POST: Mangakas/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var manga = await _context.Manga.FindAsync(id);
-            _context.Manga.Remove(manga);
+            var mangaka = await _context.Mangaka.FindAsync(id);
+            _context.Mangaka.Remove(mangaka);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool MangaExists(int id)
+        private bool MangakaExists(int id)
         {
-            return _context.Manga.Any(e => e.ID == id);
+            return _context.Mangaka.Any(e => e.ID == id);
         }
     }
 }

@@ -14,5 +14,6 @@ namespace MyMangaLibrary.Data
         {
         }
         public DbSet<MyMangaLibrary.Models.Manga> Manga { get; set; }
+        public DbSet<MyMangaLibrary.Models.Mangaka> Mangaka { get; set; }
     }
 }

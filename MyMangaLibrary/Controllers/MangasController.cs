@@ -63,6 +63,9 @@ namespace MyMangaLibrary.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ID,Rating,Name,ChapterCount")] Manga manga)
         {
+            if (manga.Rating > 10.0m) {
+                return View("Create");
+            }
             if (ModelState.IsValid)
             {
                 _context.Add(manga);

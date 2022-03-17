@@ -10,31 +10,31 @@ using MyMangaLibrary.Models;
 
 namespace MyMangaLibrary.Controllers
 {
-    public class MangasController : Controller
+    public class CharactersController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public MangasController(ApplicationDbContext context)
+        public CharactersController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Mangas
+        // GET: Characters
         public async Task<IActionResult> Index()
         {
-            var ctx = _context.Manga.Include(m => m.Mangaka);
+            var ctx = _context.Characters.Include(c => c.MangaName);
             return View(await ctx.ToListAsync());
         }
-        public async Task<IActionResult> ShowSearchForm()
-        {
+
+        public async Task<IActionResult> ShowSearchForm() {
             return View();
         }
         public async Task<IActionResult> ShowSearchResults(string SearchPhrase)
         {
-            var ctx = _context.Manga.Include(m => m.Mangaka);
+            var ctx = _context.Characters.Include(c => c.MangaName);
             return View("Index", await ctx.Where( m => m.Name.Contains(SearchPhrase)).ToListAsync());
         }
-        // GET: Mangas/Details/5
+        // GET: Characters/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -42,42 +42,42 @@ namespace MyMangaLibrary.Controllers
                 return NotFound();
             }
 
-            var manga = await _context.Manga
-                .Include(m => m.Mangaka)
+            var characters = await _context.Characters
+                .Include(c => c.MangaName)
                 .FirstOrDefaultAsync(m => m.ID == id);
-            if (manga == null)
+            if (characters == null)
             {
                 return NotFound();
             }
 
-            return View(manga);
+            return View(characters);
         }
 
-        // GET: Mangas/Create
+        // GET: Characters/Create
         public IActionResult Create()
         {
-            ViewData["MangakaID"] = new SelectList(_context.Mangaka, "ID", "Name");
+            ViewData["MangaID"] = new SelectList(_context.Manga, "ID", "Name");
             return View();
         }
 
-        // POST: Mangas/Create
+        // POST: Characters/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Rating,Name,ChapterCount,MangakaID")] Manga manga)
+        public async Task<IActionResult> Create([Bind("ID,Name,MangaID")] Characters characters)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(manga);
+                _context.Add(characters);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["MangakaID"] = new SelectList(_context.Mangaka, "ID", "Name", manga.MangakaID);
-            return View(manga);
+            ViewData["MangaID"] = new SelectList(_context.Manga, "ID", "Name", characters.MangaID);
+            return View(characters);
         }
 
-        // GET: Mangas/Edit/5
+        // GET: Characters/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -85,58 +85,23 @@ namespace MyMangaLibrary.Controllers
                 return NotFound();
             }
 
-            var manga = await _context.Manga.FindAsync(id);
-            if (manga == null)
+            var characters = await _context.Characters.FindAsync(id);
+            if (characters == null)
             {
                 return NotFound();
             }
-            return View(manga);
+            ViewData["MangaID"] = new SelectList(_context.Manga, "ID", "Name", characters.MangaID);
+            return View(characters);
         }
 
-        [HttpPost]
-        public ActionResult DecreaseChapter(int id) {
-            if (id == null) {
-                return NotFound();
-            }
-            var manga =  _context.Manga.Where(m => m.ID == id).FirstOrDefault();
-            if (manga == null) {
-                return NotFound();
-            }
-
-            if (manga.ChapterCount > 0) {
-                manga.ChapterCount--;
-            } 
-            _context.Update(manga);
-            _context.SaveChanges();
-
-            return RedirectToAction("Index");
-        }
-
-        [HttpPost]
-        public ActionResult IncreaseChapter(int id) {
-            if (id == null) {
-                return NotFound();
-            }
-            var manga =  _context.Manga.Where(m => m.ID == id).FirstOrDefault();
-            if (manga == null) {
-                return NotFound();
-            }
-
-            manga.ChapterCount++;
-            _context.Update(manga);
-            _context.SaveChanges();
-
-            return RedirectToAction("Index");
-        }
-
-        // POST: Mangas/Edit/5
+        // POST: Characters/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Rating,Name,ChapterCount,Summary")] Manga manga)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,Name,MangaID")] Characters characters)
         {
-            if (id != manga.ID)
+            if (id != characters.ID)
             {
                 return NotFound();
             }
@@ -145,12 +110,12 @@ namespace MyMangaLibrary.Controllers
             {
                 try
                 {
-                    _context.Update(manga);
+                    _context.Update(characters);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!MangaExists(manga.ID))
+                    if (!CharactersExists(characters.ID))
                     {
                         return NotFound();
                     }
@@ -161,10 +126,11 @@ namespace MyMangaLibrary.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(manga);
+            ViewData["MangaID"] = new SelectList(_context.Manga, "ID", "Name", characters.MangaID);
+            return View(characters);
         }
 
-        // GET: Mangas/Delete/5
+        // GET: Characters/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -172,31 +138,31 @@ namespace MyMangaLibrary.Controllers
                 return NotFound();
             }
 
-            var manga = await _context.Manga
-                .Include(m => m.Mangaka)
+            var characters = await _context.Characters
+                .Include(c => c.MangaName)
                 .FirstOrDefaultAsync(m => m.ID == id);
-            if (manga == null)
+            if (characters == null)
             {
                 return NotFound();
             }
 
-            return View(manga);
+            return View(characters);
         }
 
-        // POST: Mangas/Delete/5
+        // POST: Characters/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var manga = await _context.Manga.FindAsync(id);
-            _context.Manga.Remove(manga);
+            var characters = await _context.Characters.FindAsync(id);
+            _context.Characters.Remove(characters);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool MangaExists(int id)
+        private bool CharactersExists(int id)
         {
-            return _context.Manga.Any(e => e.ID == id);
+            return _context.Characters.Any(e => e.ID == id);
         }
     }
 }

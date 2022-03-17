@@ -17,11 +17,16 @@ a {
   background-color: transparent;
   border-color: transparent;
 }
-
 .btn-primary {
   color: #fff;
   background-color: #1b6ec2;
   border-color: #1861ac;
+}
+
+.manga-link {
+  color: #e5e5e5;
+  text-decoration: underline;
+  text-decoration-color: black;
 }
 
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {

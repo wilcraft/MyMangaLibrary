@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyMangaLibrary.Data;
 
 namespace MyMangaLibrary.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220317131847_UpdatedDatabaseEight")]
+    partial class UpdatedDatabaseEight
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -246,10 +248,10 @@ namespace MyMangaLibrary.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("ChapterCount")
+                    b.Property<int>("AuthorID")
                         .HasColumnType("int");
 
-                    b.Property<int>("MangakaID")
+                    b.Property<int>("ChapterCount")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -265,7 +267,7 @@ namespace MyMangaLibrary.Data.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("MangakaID");
+                    b.HasIndex("AuthorID");
 
                     b.ToTable("Manga");
                 });
@@ -357,13 +359,13 @@ namespace MyMangaLibrary.Data.Migrations
 
             modelBuilder.Entity("MyMangaLibrary.Models.Manga", b =>
                 {
-                    b.HasOne("MyMangaLibrary.Models.Mangaka", "Mangaka")
+                    b.HasOne("MyMangaLibrary.Models.Mangaka", "Author")
                         .WithMany()
-                        .HasForeignKey("MangakaID")
+                        .HasForeignKey("AuthorID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Mangaka");
+                    b.Navigation("Author");
                 });
 #pragma warning restore 612, 618
         }

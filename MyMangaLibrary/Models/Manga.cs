@@ -16,7 +16,12 @@ namespace MyMangaLibrary.Models
         [Required]
         [StringLength(255, ErrorMessage = "Name is too long!")]
         public string Name { get; set; } = null;
+        [Range(0, int.MaxValue, ErrorMessage = "Chapter count cannot be less than 0!")]
         public int ChapterCount { get; set; }
         public string Summary { get; set; }
+
+        [ForeignKey("MangakaID")]
+        public int MangakaID { get; set; }
+        public Mangaka Mangaka { get; set; }
     }
 }
